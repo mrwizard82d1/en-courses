@@ -5,4 +5,5 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [ring/ring "1.15.0-RC1"]]
-  :repl-options {:init-ns webdev.core})
+  :repl-options {:init-ns webdev.core}
+  :main webdev.core)
