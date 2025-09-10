@@ -1,6 +1,6 @@
 (ns webdev.core
-  (:require [clojure.pprint :as pprint]
-            [ring.adapter.jetty :as jetty]))
+  (:require [ring.adapter.jetty :as jetty]
+            [ring.middleware.reload :refer [wrap-reload]]))
 
 (defn greet [req]
   ;; The Ring response has three parts:
@@ -32,3 +32,12 @@
   ;; requests to be in the form that Ring understands (using Clojure maps
   ;; and so on).
   (jetty/run-jetty greet {:port (Integer. port)}))
+
+(defn -dev-main
+  "This function is **only** called in development.
+
+  The major difference between `-main` and `-dev-main`` is that `-dev-main`
+  wraps our key function, `greet`, in middleware that supports reloading
+  thereby reducing the number of times one must restart the server"
+  [port]
+  (jetty/run-jetty (wrap-reload #'greet) {:port (Integer. port)}))
