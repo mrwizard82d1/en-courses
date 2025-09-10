@@ -1,5 +1,6 @@
 (ns webdev.core
-  (:require [ring.adapter.jetty :as jetty]))
+  (:require [clojure.pprint :as pprint]
+            [ring.adapter.jetty :as jetty]))
 
 (defn greet [req]
   ;; The Ring response has three parts:
@@ -17,9 +18,13 @@
   ;; - Returns a status code of 200 (everthing A-ok) to all requests
   ;; - Returns the same (text) budy to all requests
   ;; - Returns **no** headers.
-  {:status 200
-    :body "Hello, Ring World (no not that \"Ringworld\")!"
-    :headers {}})
+  (if (= (:uri req) "/")
+    {:status 200
+     :body "Hello, Ring World (no not that \"Ringworld\")!"
+     :headers {}}
+    {:status 404
+     :body "Page not found"
+     :headers{}}))
 
 (defn -main [port]
   ;; The function, `jetty/run-jetty` creates a Jetty adapter for Ring. Ring
