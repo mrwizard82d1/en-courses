@@ -3,25 +3,16 @@
             [ring.middleware.reload :refer [wrap-reload]]))
 
 (defn greet [req]
-  ;; The Ring response has three parts:
-  ;; - `:status` The HTTP status code
-  ;; - `:body` The body of the HTTP response. The body can be any of:
-  ;;    - A string
-  ;;    - A file
-  ;;    - An input stream (Should this be an **output** stream?)
-  ;; - `:headers` The map of response headers. This value is a map of
-  ;;    - Strings to strings
-  ;;    - Strings to `seqs` of strings (if you have multiple values
-  ;;      for the **same** headre)
-  ;;
-  ;; Our handler is very simple. It
-  ;; - Returns a status code of 200 (everthing A-ok) to all requests
-  ;; - Returns the same (text) budy to all requests
-  ;; - Returns **no** headers.
-  (if (= (:uri req) "/")
+  (cond
+    (= (:uri req) "/")
     {:status 200
      :body "Hello, Ring World (no not that \"Ringworld\")!"
      :headers {}}
+    (= (:uri req) "/goodbye")
+    {:status 200
+     :body "Goobye, Cruel World!"
+     :headers {}}
+    :else
     {:status 404
      :body "Page not found"
      :headers{}}))
