@@ -6,12 +6,12 @@
 
 (defn greet [req]
   {:status 200
-    :body "Hello, Ring World (no not that \"Ringworld\")!"
+    :body "Hello, Ring World (no not that Ringworld)!"
     :headers {}})
 
 (defn goodbye [req]
   {:status 200
-    :body "Goodbye, Cruel Ring World (still not that Ringworld!"
+    :body "Goodbye, Cruel Ring World (still not that Ringworld!)"
     :headers {}})
 
 (defroutes app
