@@ -20,7 +20,7 @@
   ;; - Returns **no** headers.
   (if (= (:uri req) "/")
     {:status 200
-     :body "Hello, Ring World (no not that \"Ringworld\")!"
+     :body "Hello, Ring World (no not that \"Ringworld\")! (But I digress.)"
      :headers {}}
     {:status 404
      :body "Page not found"
