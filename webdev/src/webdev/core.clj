@@ -9,9 +9,16 @@
     :body "Hello, Ring World (no not that \"Ringworld\")!"
     :headers {}})
 
+(defn goodbye [req]
+  {:status 200
+    :body "Goodbye, Cruel Ring World (still not that Ringworld!"
+    :headers {}})
+
 (defroutes app
   ;; When a user requests the root, supply a friendly greeting
   (GET "/" [] greet)
+  ;; When a user requests goodbye, supply a sad so-long
+  (GET "/goodbye" [] goodbye)
   ;; No matches! Respond with a 404 and a "Page not found" message
   (not-found "Page not found"))
 
