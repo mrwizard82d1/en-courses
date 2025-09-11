@@ -6,7 +6,8 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [ring/ring "1.15.0-RC1"]
                  [compojure "1.7.1"]
-                 [org.clojure/java.jdbc "0.7.12"]]
+                 [org.clojure/java.jdbc "0.7.12"]
+                 [org.postgresql/postgresql "42.7.7"]]
   :repl-options {:init-ns webdev.core}
   :main webdev.core
   :profiles {:dev {:main webdev.core/-dev-main}})
