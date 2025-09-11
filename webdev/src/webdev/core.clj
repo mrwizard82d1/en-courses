@@ -1,9 +1,9 @@
 (ns webdev.core
-  (:require [clojure.pprint :as pp]
-            [ring.adapter.jetty :as jetty]
+  (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [compojure.core :refer [defroutes GET]]
-            [compojure.route :refer [not-found]]))
+            [compojure.route :refer [not-found]]
+            [ring.handler.dump :refer [handle-dump]]))
 
 (defn greet [req]
   {:status 200
@@ -20,11 +20,6 @@
     :body "Written by mrwizard82d1. Learning about Clojure web development."
     :headers {}})
 
-(defn request [req]
-  {:status 200
-   :body (with-out-str (pp/pprint req))
-   :headers {}})
-
 (defroutes app
   ;; When a user requests the root, supply a friendly greeting
   (GET "/" [] greet)
@@ -33,7 +28,7 @@
   ;; Describe this application
   (GET "/about" [] about)
   ;; Echo the request
-  (GET "/request" [] request)
+  (GET "/request" [] handle-dump)
   ;; No matches! Respond with a 404 and a "Page not found" message
   (not-found "Page not found"))
 
