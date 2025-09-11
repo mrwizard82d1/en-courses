@@ -21,9 +21,10 @@
    :headers {}})
 
 (defn yo-name [req]
-  {:status 200
-   :body (str "Yo! " (get-in req [:params :name]) "!")
-   :headers {}})
+  (let [name (get-in req [:params :name])]
+    {:status 200
+     :body (str "Yo! " name "!")
+     :headers {}}))
 
 (defroutes app
   ;; When a user requests the root, supply a friendly greeting
