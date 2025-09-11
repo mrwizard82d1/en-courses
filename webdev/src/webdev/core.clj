@@ -35,11 +35,16 @@
 
 (defn calc [req]
   (let [left (parse-long (get-in req [:route-params :left]))
-        op (string->op (get-in req [:route-params :op]))
-        right (parse-long (get-in req [:route-params :right]))]
-    {:status 200
-     :body (str (apply op [left right]))
-     :headers {}}))
+        op (get-in req [:route-params :op])
+        right (parse-long (get-in req [:route-params :right]))
+        f (string->op op)]
+    (if f
+      {:status 200
+       :body (str (f left right))
+       :headers {}}
+      {:status 404
+       :body (str "Unrecognized operator, `" op "`")
+       :headers {}})))
 
 (defroutes app
   ;; When a user requests the root, supply a friendly greeting
