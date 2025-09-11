@@ -7,18 +7,23 @@
 
 (defn greet [req]
   {:status 200
-    :body "Hello, Ring World (no not that Ringworld)!"
-    :headers {}})
+   :body "Hello, Ring World (no not that Ringworld)!"
+   :headers {}})
 
 (defn goodbye [req]
   {:status 200
-    :body "Goodbye, Cruel Ring World (still not that Ringworld!)"
-    :headers {}})
+   :body "Goodbye, Cruel Ring World (still not that Ringworld!)"
+   :headers {}})
 
 (defn about [req]
   {:status 200
-    :body "Written by mrwizard82d1. Learning about Clojure web development."
-    :headers {}})
+   :body "Written by mrwizard82d1. Learning about Clojure web development."
+   :headers {}})
+
+(defn yo-name [req]
+  {:status 200
+   :body (str "Yo! " (get-in req [:params :name]) "!")
+   :headers {}})
 
 (defroutes app
   ;; When a user requests the root, supply a friendly greeting
@@ -29,6 +34,8 @@
   (GET "/about" [] about)
   ;; Echo the request
   (GET "/request" [] handle-dump)
+  ;; A "friendly" greeting
+  (GET "/yo/:name" [] yo-name)
   ;; No matches! Respond with a 404 and a "Page not found" message
   (not-found "Page not found"))
 
