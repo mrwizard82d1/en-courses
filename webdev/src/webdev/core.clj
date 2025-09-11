@@ -21,9 +21,24 @@
    :headers {}})
 
 (defn yo-name [req]
-  (let [name (get-in req [:params :name])]
+  (let [name (get-in req [:route-params :name])]
     {:status 200
      :body (str "Yo! " name "!")
+     :headers {}}))
+
+(defn string->op [op-string]
+  (let [converter {"+" +
+                   "-" -
+                   "*" *
+                   ":" /}]
+    (get converter op-string)))
+
+(defn calc [req]
+  (let [left (parse-long (get-in req [:route-params :left]))
+        op (string->op (get-in req [:route-params :op]))
+        right (parse-long (get-in req [:route-params :right]))]
+    {:status 200
+     :body (str (apply op [left right]))
      :headers {}}))
 
 (defroutes app
@@ -37,6 +52,8 @@
   (GET "/request" [] handle-dump)
   ;; A "friendly" greeting
   (GET "/yo/:name" [] yo-name)
+  ;; An inline arithmetic calculator
+  (GET "/calc/:left/:op/:right" [] calc)
   ;; No matches! Respond with a 404 and a "Page not found" message
   (not-found "Page not found"))
 
