@@ -66,12 +66,23 @@
   ;; No matches! Respond with a 404 and a "Page not found" message
   (not-found "Page not found"))
 
+;; We must define our second piece of middleware
+(defn wrap-db [handler]
+  (fn [req]
+    ;; All this wrapper does is associate the database (`db`) with the
+    ;; request. (I find this technique an interesting way of passing
+    ;; "arguments" from "main" to child functions.)
+    (handler (assoc req :webdev/db db))))
+
 ;; Add a function, `app`, to contain our middleware.
 ;; The symbol, `app`, refers to routse directly becouse we have **no**
 ;; middleware.
 (def app
-  (wrap-params
-   routes))
+  ;; Middleware to add the database to our request map.
+  (wrap-db
+   ;; Middleware to add the query parameters to our request map.
+   (wrap-params
+    routes)))
 
 (defn -main [port]
   ;; The function, `jetty/run-jetty` creates a Jetty adapter for Ring. Ring
