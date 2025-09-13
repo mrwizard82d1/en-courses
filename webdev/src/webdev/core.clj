@@ -66,6 +66,13 @@
   ;; No matches! Respond with a 404 and a "Page not found" message
   (not-found "Page not found"))
 
+(defn wrap-server-name [handler]
+  (fn [req]
+    (let [response (handler req)]
+      (clojure.pprint/pprint (get response :headers))
+      (assoc-in response [:headers :server] "bullwinkle")
+      (clojure.pprint/pprint (get response :headers)))))
+
 ;; We must define our second piece of middleware
 (defn wrap-db [handler]
   (fn [req]
@@ -78,11 +85,13 @@
 ;; The symbol, `app`, refers to routse directly becouse we have **no**
 ;; middleware.
 (def app
-  ;; Middleware to add the database to our request map.
-  (wrap-db
-   ;; Middleware to add the query parameters to our request map.
-   (wrap-params
-    routes)))
+  ;; Middleware to add the name of our server to our response
+  (wrap-server-name
+   ;; Middleware to add the database to our request map.
+   (wrap-db
+    ;; Middleware to add the query parameters to our request map.
+    (wrap-params
+     routes))))
 
 (defn -main [port]
   ;; The function, `jetty/run-jetty` creates a Jetty adapter for Ring. Ring
