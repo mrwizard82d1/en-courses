@@ -2,6 +2,7 @@
   (:require [webdev.item.model :as items])
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
+            [ring.middleware.params :refer [wrap-params]]
             [compojure.core :refer [defroutes ANY GET POST PUT DELETE ]]
             [compojure.route :refer [not-found]]
             [ring.handler.dump :refer [handle-dump]]))
@@ -49,7 +50,7 @@
        :body (str "Unrecognized operator, `" op "`")
        :headers {}})))
 
-(defroutes app
+(defroutes routes
   ;; When a user requests the root, supply a friendly greeting
   (GET "/" [] greet)
   ;; When a user requests goodbye, supply a sad so-long
@@ -64,6 +65,13 @@
   (GET "/calc/:left/:op/:right" [] calc)
   ;; No matches! Respond with a 404 and a "Page not found" message
   (not-found "Page not found"))
+
+;; Add a function, `app`, to contain our middleware.
+;; The symbol, `app`, refers to routse directly becouse we have **no**
+;; middleware.
+(def app
+  (wrap-params
+   routes))
 
 (defn -main [port]
   ;; The function, `jetty/run-jetty` creates a Jetty adapter for Ring. Ring
