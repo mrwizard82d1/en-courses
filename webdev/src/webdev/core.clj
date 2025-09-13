@@ -66,13 +66,6 @@
   ;; No matches! Respond with a 404 and a "Page not found" message
   (not-found "Page not found"))
 
-(defn wrap-server-name [handler]
-  (fn [req]
-    (let [response (handler req)]
-      (clojure.pprint/pprint (get response :headers))
-      (assoc-in response [:headers :server] "bullwinkle")
-      (clojure.pprint/pprint (get response :headers)))))
-
 ;; We must define our second piece of middleware
 (defn wrap-db [handler]
   (fn [req]
@@ -81,12 +74,18 @@
     ;; "arguments" from "main" to child functions.)
     (handler (assoc req :webdev/db db))))
 
+(defn wrap-server [handler]
+  (fn [req]
+    (let [response (handler req)
+          wrapped-response (assoc-in response [:headers "Server"] "bullwinkle")]
+      wrapped-response)))
+
 ;; Add a function, `app`, to contain our middleware.
 ;; The symbol, `app`, refers to routse directly becouse we have **no**
 ;; middleware.
 (def app
   ;; Middleware to add the name of our server to our response
-  (wrap-server-name
+  (wrap-server
    ;; Middleware to add the database to our request map.
    (wrap-db
     ;; Middleware to add the query parameters to our request map.
