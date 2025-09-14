@@ -59,7 +59,7 @@
   ;; Describe this application
   (GET "/about" [] about)
   ;; Echo the request
-  (GET "/request" [] handle-dump)
+  (ANY "/request" [] handle-dump)
 
   ;; Get all the items from the repository
   (GET "/items" [] handle-index-items)
