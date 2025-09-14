@@ -47,4 +47,4 @@
    db
    ["SELECT id, description, checked, date_created
      FROM items
-     ORDER BY date-created"]))
+     ORDER BY date_created"]))
