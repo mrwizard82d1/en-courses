@@ -45,6 +45,6 @@
   [db]
   (db/query
    db
-   ["SELECT id, description, checked, date_created
+   ["SELECT id, name, description, checked, date_created
      FROM items
      ORDER BY date_created"]))
