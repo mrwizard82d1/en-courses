@@ -26,7 +26,31 @@
          ;; The document body
          [:body
           ;; A container `div`
-          [:div.container]
+          [:div.container
+           ;; Render a heading
+           [:h1 "My items"]
+           ;; Render a grid row (if we have items)
+           [:div.row
+            (if (seq items)
+              ;; Add a (striped) table
+              [:table.table.table-striped
+               [:thead
+                ;; Add the table header as a table row
+                [:tr
+                 [:th "Name"]
+                 [:th "Description"]]]
+               [:tbody
+                ;; Iterate over each item in `items`
+                (for [i items]
+                  [:tr
+                   ;; Remember to escape the `name` and `description`
+                   ;; data if they are from user input
+                   ;;
+                   ;; Present the name of the item
+                   [:td (h (:name i))]
+                   ;; And the description
+                   [:td (h (:description i))]])]]
+              [:div.col-sm-offset-1 "There are not items."])]]
           ;; A script tag referring to `jquery`
           [:script {:src "https://code.jquery.com/jquery-3.7.1.min.js"
                     :integrity "sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
