@@ -5,6 +5,8 @@
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
+            [ring.middleware.resource :refer [wrap-resource]]
+            [ring.middleware.file-info :refer [wrap-file-info]]
             [compojure.core :refer [defroutes ANY GET POST PUT DELETE ]]
             [compojure.route :refer [not-found]]
             [ring.handler.dump :refer [handle-dump]]))
@@ -96,11 +98,16 @@
 (def app
   ;; Middleware to add the name of our server to our response
   (wrap-server
-   ;; Middleware to add the database to our request map.
-   (wrap-db
-    ;; Middleware to add the query parameters to our request map.
-    (wrap-params
-     routes))))
+   ;; Middleware to extract file information.
+   (wrap-file-info
+    ;; Middleware to handle static resources.
+    (wrap-resource
+     ;; Middleware to add the database to our request map.
+     (wrap-db
+      ;; Middleware to add the query parameters to our request map.
+      (wrap-params
+       routes))
+    "static"))))
 
 (defn -main [port]
   ;; The function, `jetty/run-jetty` creates a Jetty adapter for Ring. Ring
