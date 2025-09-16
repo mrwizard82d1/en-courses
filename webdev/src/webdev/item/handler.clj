@@ -2,7 +2,8 @@
   (:require [webdev.item.model :refer [create-item
                                        read-items
                                        update-item
-                                       delete-item]]))
+                                       delete-item]]
+            [webdev.item.view :refer [items-page]]))
 
 (defn handle-index-items
   "A handler to list existing items and a form to add new items."
@@ -11,13 +12,7 @@
         items (read-items db)]
     {:status 200
      :headers {}
-     :body (str "<html><head></head><body><div>"
-                (mapv :name items)
-                "</div><form method=\"POST\" action=\"/items\">"
-                "<input type=\"text\" name=\"name\" placeholder=\"name\">"
-                "<input type=\"text\" name=\"description\" placeholder=\"description\">"
-                "<input type=\"submit\">"
-                "</body></html>")}))
+     :body (items-page items)}))
 
 (defn handle-create-item
   "Respond to a POST request to create a new item."

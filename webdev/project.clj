@@ -8,7 +8,8 @@
                  [ring/ring-codec "1.3.0"]
                  [compojure "1.7.1"]
                  [org.clojure/java.jdbc "0.7.12"]
-                 [org.postgresql/postgresql "42.7.7"]]
+                 [org.postgresql/postgresql "42.7.7"]
+                 [hiccup/hiccup "2.0.0"]]
   :repl-options {:init-ns webdev.core}
   :main webdev.core
   :profiles {:dev {:main webdev.core/-dev-main}})
