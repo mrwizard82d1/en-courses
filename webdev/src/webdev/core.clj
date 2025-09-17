@@ -69,7 +69,7 @@
   ;; Create a new item in the repository
   (POST "/items" [] handle-create-item)
   (DELETE "/items/:item-id" [] handle-delete-item)
-  (PUT "/items/:item_id" [] handle-update-item)
+  (PUT "/items/:item-id" [] handle-update-item)
 
   ;; A "friendly" greeting
   (GET "/yo/:name" [] yo-name)

@@ -38,7 +38,7 @@
         :value "New item"}]]]]))
 
 (defn delete-item-form
-  "An HTTP 'form' used to delete items.
+  "An HTTP 'form' used to delete an item.
 
   This technique is used because our application is completely server-side."
   [id]
@@ -52,6 +52,26 @@
      [:input.btn.btn-danger.btn-xs
       {:type :submit
        :value "Delete"}]]]))
+
+(defn update-item-form
+  "An HTTP 'form' used to update an item.
+
+  This technique is used because our application is completely server-side."
+  [id checked]
+  (html
+   [:form
+    {:method "POST"
+     :action (str "/items/" id)}
+    [:input {:type :hidden
+             :name "_method"
+             :value "PUT"}]
+    [:input {:type :hidden
+             :name "checked"
+             :value (if checked "false" "true")}]
+    [:div.btn-group
+     [:button.btn.btn-primary.btn-xs
+      {:type :submit}
+      (if checked "DONE" "TODO")]]]))
 
 (defn items-page
   "Create a basic HTML page to start."
@@ -82,6 +102,7 @@
                 ;; Add the table header as a table row
                 [:tr
                  [:th.col-sm-2]
+                 [:th.col-sm-2]
                  [:th "Name"]
                  [:th "Description"]]]
                [:tbody
@@ -93,6 +114,9 @@
                    ;;
                    ;; Present a "form" (only showing a delete button)
                    [:td (delete-item-form (:id i))]
+                   ;; Present a "form" (only showing an update button). The
+                   ;; text of the button is the current status.
+                   [:td (update-item-form (:id i) (:checked i))]
                    ;; Present the name of the item
                    [:td (h (:name i))]
                    ;; And the description
