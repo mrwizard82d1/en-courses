@@ -13,7 +13,16 @@
             [compojure.route :refer [not-found]]
             [ring.handler.dump :refer [handle-dump]]))
 
-(def db "jdbc:postgresql://localhost/webdev")
+(def db (or
+         ;; In a Heroku environment, the environment variable,
+         ;; "DATABASE_URL", contains the URL of our PostgreSQL
+         ;; database.
+         ;;
+         ;; Remember, Heroku has apparently changed so that it
+         ;; no longer offers free hosting. (I may be wrong.)
+         (System/getenv "DATABASE_URL")
+         ;; Locally, we use a local PostgreSQL database.
+         "jdbc:postgresql://localhost/webdev"))
 
 (defn greet [req]
   {:status 200
