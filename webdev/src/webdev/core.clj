@@ -94,6 +94,25 @@
           wrapped-response (assoc-in response [:headers "Server"] "bullwinkle")]
       wrapped-response)))
 
+;; A look-up table mapping HTTP methods to appropriate keywords.
+(def sim-methods {"PUT" :put
+                  "DELETE" :delete})
+
+(defn wrap-simulated-methods
+  "A work-around to support ``HTTP DELETE` from our page.
+
+  (An `HTTP DELETE` is not supprted from an HTML form.)`"
+  [hdlr]
+  (fn [req]
+    (if-let [method (and (= :post (:request-method req))
+                         (sim-methods (get-in req [:params "_method"])))]
+      ;; If `method` was bound (because it was an HTTP POST and it has a
+      ;; simulated HTTP method) to either PUT" or "DELETE", then invoke
+      ;; `hdlr` with the adjusted request (with the appropriate method)
+      (hdlr (assoc req :request-method method))
+      ;; Otherwise, simply invoke the handler wth the original request
+      (hdlr req))))
+
 ;; Add a function, `app`, to contain our middleware.
 ;; The symbol, `app`, refers to routse directly becouse we have **no**
 ;; middleware.
@@ -108,7 +127,8 @@
      (wrap-db
       ;; Middleware to add the query parameters to our request map.
       (wrap-params
-       routes))
+       (wrap-simulated-methods
+        routes)))
     "static"))))
 
 (defn -main [port]
