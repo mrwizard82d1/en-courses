@@ -2,7 +2,8 @@
   (:require [webdev.item.model :as items]
             [webdev.item.handler :refer [handle-index-items
                                          handle-create-item
-                                         handle-delete-item]])
+                                         handle-delete-item
+                                         handle-update-item]])
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
@@ -68,6 +69,7 @@
   ;; Create a new item in the repository
   (POST "/items" [] handle-create-item)
   (DELETE "/items/:item-id" [] handle-delete-item)
+  (PUT "/items/:item_id" [] handle-update-item)
 
   ;; A "friendly" greeting
   (GET "/yo/:name" [] yo-name)
@@ -108,7 +110,7 @@
                          (sim-methods (get-in req [:params "_method"])))]
       ;; If `method` was bound (because it was an HTTP POST and it has a
       ;; simulated HTTP method) to either PUT" or "DELETE", then invoke
-      ;; `hdlr` with the adjusted request (with the appropriate method)
+      ;; `hdlr` with the adjusted request (with the appropriate method)Capitalized, short (50 chars or less) summary
       (hdlr (assoc req :request-method method))
       ;; Otherwise, simply invoke the handler wth the original request
       (hdlr req))))

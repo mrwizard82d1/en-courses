@@ -20,7 +20,7 @@
   (let [name (get-in req [:params "name"])
         description (get-in req [:params "description"])
         db (:webdev/db req)
-        item-id (create-item db name description)]
+        item-id (create-item db name description)]:bp
     (println (str "Created item with id, '" item-id "'."))
     {:status 302
      :headers {"Location" "/items"}
@@ -42,3 +42,23 @@
       {:status 404
        :headers {}
        :body "List not found"})))
+
+(defn handle-update-item
+  "Respond to a request to update a specific item."
+  [req]
+  (let [db (:webdev/db req)
+        item-id (->> req
+                     :route-params
+                     :item-id
+                     java.util.UUID/fromString)
+        checked (get-in req [:params "checked"])
+        ;; Use string "true" because it is from the request and has not
+        ;; been converted
+        exists? (update-item db item-id (= "true" checked))]
+    (if exists?
+     {:status 302
+      :headers {"Location" "/items"}
+      :body ""}
+     {:status 404
+      :headers {}
+      :body "Item not found"})))
