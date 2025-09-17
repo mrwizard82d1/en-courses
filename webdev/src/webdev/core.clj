@@ -1,7 +1,8 @@
 (ns webdev.core
   (:require [webdev.item.model :as items]
             [webdev.item.handler :refer [handle-index-items
-                                         handle-create-item]])
+                                         handle-create-item
+                                         handle-delete-item]])
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
@@ -64,14 +65,15 @@
 
   ;; Get all the items from the repository
   (GET "/items" [] handle-index-items)
+  ;; Create a new item in the repository
   (POST "/items" [] handle-create-item)
+  (DELETE "/items/:item-id" [] handle-delete-item)
 
   ;; A "friendly" greeting
   (GET "/yo/:name" [] yo-name)
   ;; An inline arithmetic calculator
   (GET "/calc/:left/:op/:right" [] calc)
-  ;; Read all items from the repository
-  ;;
+
   ;; Echo the request
   (ANY "/request" [] handle-dump)
 
