@@ -25,21 +25,21 @@
 
 (defn update-item
   [db id checked]
-  (= (1) (db/execute!
+  (= [1] (db/execute!
           db
           ["UPDATE items
-             SET CHECKED = ?
-             WHERE id = ?"
+            SET CHECKED = ?
+            WHERE id = ?"
            checked
            id])))
 
 (defn delete-item
   [db id]
-  (= (1) (db/execute!
+  (= [1] (db/execute!
           db
           ["DELETE FROM items
-            WHERE id = ?"]
-          id)))
+            WHERE id = ?"
+           id])))
 
 (defn read-items
   [db]

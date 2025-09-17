@@ -37,6 +37,21 @@
        {:type :submit
         :value "New item"}]]]]))
 
+(defn delete-item-form
+  "An HTTP 'form' used to delete items.
+
+  This technique is used because our application is completely server-side."
+  [id]
+  (html
+   [:form
+    {:method "POST" :action (str "/items/" id)}
+    [:input {:type :hidden
+             :name "_method"
+             :value "DELETE"}]
+    [:div.btn-group
+     [:input.btn.btn-danger.btn-xs
+      {:type :submit
+       :value "Delete"}]]]))
 
 (defn items-page
   "Create a basic HTML page to start."
@@ -66,6 +81,7 @@
                [:thead
                 ;; Add the table header as a table row
                 [:tr
+                 [:th.col-sm-2]
                  [:th "Name"]
                  [:th "Description"]]]
                [:tbody
@@ -75,6 +91,8 @@
                    ;; Remember to escape the `name` and `description`
                    ;; data if they are from user input
                    ;;
+                   ;; Present a "form" (only showing a delete button)
+                   [:td (delete-item-form (:id i))]
                    ;; Present the name of the item
                    [:td (h (:name i))]
                    ;; And the description
