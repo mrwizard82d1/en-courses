@@ -9,6 +9,35 @@
    ;; escaping HTML characters.
    [hiccup.core :refer [html h]]))
 
+(defn new-item
+  "Create a new item"
+  []
+  ;; Although it is not strictly necessary to wrap this code in the `html`
+  ;; macro, it does make the code more efficient to do so.
+  (html
+   [:form.form-horizontal
+    {:method "POST" :action "/items"}
+    [:div.form-group
+     [:label.control-label.col-sm-2 {:for :name-input}
+      "Name"]
+     [:div.col-sm-10
+      [:input#name-input.form-control
+       {:name :name
+        :placeholder "Name"}]]]
+    [:div.form-group
+     [:label.control-label.col-sm-2 {:for :desc-input}
+      "Description"]
+     [:div.col-sm-10
+      [:input#desc-input.form-control
+       {:name :description
+        :placeholder "Description"}]]]
+    [:div.form-group
+     [:div-col-sm-offset-2.col-sm-10
+      [:input.btn.btn-primary
+       {:type :submit
+        :value "New item"}]]]]))
+
+
 (defn items-page
   "Create a basic HTML page to start."
   [items]
@@ -50,7 +79,10 @@
                    [:td (h (:name i))]
                    ;; And the description
                    [:td (h (:description i))]])]]
-              [:div.col-sm-offset-1 "There are not items."])]]
+              [:div.col-sm-offset-1 "There are not items."])]
+           [:div
+            [:h2 "Create a new item"]
+            (new-item)]]
           ;; A script tag referring to `jquery`
           [:script {:src "https://code.jquery.com/jquery-3.7.1.min.js"
                     :integrity "sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
