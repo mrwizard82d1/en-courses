@@ -25,3 +25,20 @@
     {:status 302
      :headers {"Location" "/items"}
      :body ""}))
+
+(defn handle-delete-item
+  "Respond to a request to delete a specific item."
+  [req]
+  (let [db (:webdev/db req)
+        item-id (->> req
+                     :route-params
+                     :item-id
+                     java.util.UUID/fromString)
+        exists? (delete-item db item-id)]
+    (if exists?
+      {:status 302
+       :headers {"Location" "/items"}
+       :body ""}
+      {:status 404
+       :headers {}
+       :body "List not found"})))
