@@ -80,7 +80,7 @@
                    ;; And the description
                    [:td (h (:description i))]])]]
               [:div.col-sm-offset-1 "There are not items."])]
-           [:div
+           [:div.col-sm-2
             [:h2 "Create a new item"]
             (new-item)]]
           ;; A script tag referring to `jquery`
