@@ -5,5 +5,7 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [clj-http/clj-http "3.13.1"]
-                 [cheshire/cheshire "6.1.0"]]
+                 [cheshire/cheshire "6.1.0"]
+                 [com.arohner/uri "0.1.2"]
+                 [org.jsoup/jsoup "1.21.2"]]
   :repl-options {:init-ns clj-http-playgound.core})
