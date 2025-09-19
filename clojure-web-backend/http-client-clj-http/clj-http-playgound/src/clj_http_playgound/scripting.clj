@@ -23,10 +23,19 @@ location-forecast-uri
 ;; must manage cookies. Specifically, we must create and manage a
 ;; "cookie store". The `clj-http` package provides services to help
 ;; in this effort.
+
+(def login-url "https://www.visualcrossing.com/account/#")
 (let [cookie-store (cookies/cookie-store)
-      login-page (http/get location-forecast-uri
+      login-page (http/get login-url
                            {:cookie-store cookie-store})
       login-doc (-> login-page
                     :body
-                    Jsoup/parse)]
-  login-doc)
+                    Jsoup/parse)
+      auth-slot (-> login-doc
+                    (.select ".auth-slot"))
+      #_sign-in-btn #_(-> auth-slot
+                      (.select "a.#"))
+      #_login-form #_(-> login-doc
+                     (.select "input#exampleInputEmail1.form-control")
+                     first)]
+  auth-slot)
